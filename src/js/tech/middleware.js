@@ -80,7 +80,7 @@ export function getMiddleware(type) {
  *         The next middleware to run.
  */
 export function setSource(player, src, next) {
-  player.setTimeout(() => setSourceHelper(src, middlewares[src.type], next, player), 1);
+  setSourceHelper(src, middlewares[src.type], next, player);
 }
 
 /**
