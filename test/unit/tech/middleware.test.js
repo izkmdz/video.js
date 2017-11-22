@@ -245,7 +245,7 @@ QUnit.test('middleware mediate allows and can detect cancellation', function(ass
   assert.equal(pc2, true, 'the play has been cancelled in middleware 2');
 });
 
-QUnit.test('setSource is run asynchronously', function(assert) {
+QUnit.test('setSource is run synchronously when there are no asynchronous middleware', function(assert) {
   let src;
   let acc;
 
@@ -259,13 +259,42 @@ QUnit.test('setSource is run asynchronously', function(assert) {
     acc = _acc;
   });
 
+  assert.deepEqual(src, {src: 'foo', type: 'video/foo'}, 'we got the same source back');
+  assert.equal(acc.length, 0, 'we did not accumulate any middleware since there were none');
+});
+
+QUnit.test('setSource is run asynchronously when there is asynchronous middleware', function(assert) {
+  let src;
+  let acc;
+
+  const asyncMiddleware = {
+    setSource(_src, next) {
+      setTimeout(() => {
+        next(null, _src);
+      }, 1);
+    }
+  };
+  const asyncMiddlewareFactory = () => asyncMiddleware;
+
+  middleware.use('video/foo', asyncMiddlewareFactory);
+
+  middleware.setSource({
+    setTimeout: window.setTimeout,
+    id: () => 1
+  }, { src: 'foo', type: 'video/foo' }, function(_src, _acc) {
+    src = _src;
+    acc = _acc;
+  });
+
   assert.equal(src, undefined, 'no src was returned yet');
   assert.equal(acc, undefined, 'no accumulator was returned yet');
 
   this.clock.tick(1);
 
   assert.deepEqual(src, {src: 'foo', type: 'video/foo'}, 'we got the same source back');
-  assert.equal(acc.length, 0, 'we did not accumulate any middleware since there were none');
+  assert.equal(acc[0], asyncMiddleware, 'we got the async middleware back');
+
+  middleware.getMiddleware('video/foo').pop();
 });
 
 QUnit.test('setSource selects a source based on the middleware given', function(assert) {
