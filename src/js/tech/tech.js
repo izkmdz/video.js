@@ -727,8 +727,11 @@ class Tech extends Component {
     this.remoteTextTracks().addTrack(htmlTrackElement.track);
 
     if (manualCleanup !== true) {
-      // create the TextTrackList if it doesn't exist
-      this.ready(() => this.autoRemoteTextTracks_.addTrack(htmlTrackElement.track));
+      // Create the TextTrackList if it doesn't exist.
+      //
+      // WARNING: If source-setting becomes asynchronous again, this needs to be wrapped
+      // in a `player.ready` callback.
+      this.autoRemoteTextTracks_.addTrack(htmlTrackElement.track);
     }
 
     return htmlTrackElement;

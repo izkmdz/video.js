@@ -919,22 +919,22 @@ QUnit[qunitFn]('sourceset', function(hooks) {
       techOrder: ['fakeFlash', 'html5']
     });
 
+    // the first sourceset ends up being the second source because when the first source is set
+    // the tech isn't ready so we delay it, then the second source comes and the tech is ready
+    // so it ends up being triggered immediately.
+    player.on('sourceset', (e) => {
+      sourcesets.push(e.src);
+
+      if (sourcesets.length === 3) {
+        assert.deepEqual([flashSrc.src, sourceTwo.src, sourceOne.src], sourcesets, 'sourceset as expected');
+
+        player.dispose();
+        delete Tech.techs_.FakeFlash;
+        done();
+      }
+    });
+
     player.ready(function() {
-      // the first sourceset ends up being the second source because when the first source is set
-      // the tech isn't ready so we delay it, then the second source comes and the tech is ready
-      // so it ends up being triggered immediately.
-      player.on('sourceset', (e) => {
-        sourcesets.push(e.src);
-
-        if (sourcesets.length === 3) {
-          assert.deepEqual([flashSrc.src, sourceTwo.src, sourceOne.src], sourcesets, 'sourceset as expected');
-
-          player.dispose();
-          delete Tech.techs_.FakeFlash;
-          done();
-        }
-      });
-
       player.src(sourceOne);
       player.src(sourceTwo);
     });
