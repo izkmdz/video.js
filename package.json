@@ -1,5 +1,5 @@
 {
-  "name": "video.js",
+  "name": "@silvermine/video.js",
   "description": "An HTML5 and Flash video player with a common API and skin for both.",
   "version": "6.2.0",
   "main": "./dist/video.cjs.js",
