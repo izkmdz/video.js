@@ -20,10 +20,10 @@ $ npm -v
 nvm use 6.10.3
 git fetch --all
 git checkout silvermine_7.2.x
-git status # make sure there are no uncommmited changes
+git status # make sure there are no uncommited changes
 git reset origin/silvermine_7.2.x --hard
 npm install
-git status # make sure there are no uncommmited changes
+git status # make sure there are no uncommited changes
 npm version "7.2.0-${NEW_BUILD_NUMBER}" -m "chore: Version bump: %s"
 npm pack
 npm publish "silvermine-video.js-7.2.0-${NEW_BUILD_NUMBER}.tgz"
