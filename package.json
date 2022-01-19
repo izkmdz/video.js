@@ -1,5 +1,5 @@
 {
-  "name": "video.js",
+  "name": "@silvermine/video.js",
   "description": "An HTML5 video player that supports HLS and DASH with a common API and skin.",
   "version": "7.17.0",
   "main": "./dist/video.cjs.js",
