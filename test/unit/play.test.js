@@ -127,22 +127,9 @@ const mainModule = function(playReturnValue, middlewareTermination, subhooks) {
     // turn off autoReady to prevent syncronous ready from the tech
     this.player = TestHelpers.makePlayer({mediaLoader: false, techFaker: {autoReady: false}});
 
-    this.playTest('before anything is ready');
-
     this.player.src({
       src: 'http://example.com/video.mp4',
       type: 'video/mp4'
-    });
-
-    this.playTest('only changingSrc', {
-      changingSrc: true
-    });
-
-    this.clock.tick(1);
-
-    this.playTest('still changingSrc, tech loaded', {
-      techLoaded: true,
-      changingSrc: true
     });
 
     this.player.tech_.triggerReady();
@@ -199,18 +186,10 @@ const mainModule = function(playReturnValue, middlewareTermination, subhooks) {
   QUnit.test('Player#play() resolves correctly with dom sources', function(assert) {
     this.player = TestHelpers.makePlayer({mediaLoader: false});
 
-    this.playTest('before anything is ready');
-
     this.player.src({
       src: 'http://example.com/video.mp4',
       type: 'video/mp4'
     });
-
-    this.playTest('only changingSrc', {
-      changingSrc: true
-    });
-
-    this.clock.tick(1);
 
     this.playTest('still changingSrc, tech/player ready', {
       techLoaded: true,
@@ -350,23 +329,10 @@ const mainModule = function(playReturnValue, middlewareTermination, subhooks) {
   QUnit.test('Player#play() resolves correctly', function(assert) {
     this.player = TestHelpers.makePlayer();
 
-    this.playTest('player/tech start out ready', {
-      techReady: true,
-      playerReady: true
-    });
-
     this.player.src({
       src: 'http://example.com/video.mp4',
       type: 'video/mp4'
     });
-
-    this.playTest('now changingSrc', {
-      techReady: true,
-      playerReady: true,
-      changingSrc: true
-    });
-
-    this.clock.tick(1);
 
     this.playTest('done changingSrc, play called if not terminated', {
       techReady: true,
